@@ -19,8 +19,9 @@ export interface DiscoverFilters {
 export class Tmdb {
 
   private apiUrl = environment.tmdb.baseUrl;
+  private apiKey = environment.tmdb.apiKey;
+
   private headers = new HttpHeaders({
-    'Authorization': `Bearer ${environment.tmdb.accessToken}`,
     'Content-Type': 'application/json'
   });
 
@@ -31,8 +32,11 @@ export class Tmdb {
       return fallback;
     }
 
+    const separator = endpoint.includes('?') ? '&' : '?';
+    const endpointWithAuth = `${endpoint}${separator}api_key=${encodeURIComponent(this.apiKey)}`;
+
     try {
-      return await firstValueFrom(this.http.get<T>(`${this.apiUrl}${endpoint}`, { headers: this.headers }));
+      return await firstValueFrom(this.http.get<T>(`${this.apiUrl}${endpointWithAuth}`, { headers: this.headers }));
     } catch (error) {
       console.error('TMDB request failed:', endpoint, error);
       return fallback;
