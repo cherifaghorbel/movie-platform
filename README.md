@@ -65,23 +65,29 @@ src/
 npm install
 ```
 
-### 2. Configure environment files
+### 2. Configure environment values
 
-Environment files are ignored by git for security.
+Real environment files are ignored by git for security.
 
-Create these files from the example:
+This project generates `src/environments/environment.ts` and `src/environments/environment.prod.ts` automatically during `npm start` and `npm run build` from environment variables.
 
-- `src/environments/environment.ts`
-- `src/environments/environment.prod.ts`
+If you do not define variables locally, fallback defaults are used.
 
-You can copy from `src/environments/environment.example.ts` and fill in your real values:
+Main variables:
 
-- `tmdb.apiKey`
-- `tmdb.accessToken`
-- `tmdb.siteUrl1`
-- `tmdb.siteUrl2`
-- `tmdb.siteUrl3`
-- `tmdb.siteUrl4`
+- `TMDB_API_KEY`
+- `TMDB_ACCESS_TOKEN`
+- `TMDB_BASE_URL`
+- `TMDB_IMAGE_BASE`
+- `TMDB_YOUTUBE_EMBED`
+- `WATCH_SITE_URL1`
+- `WATCH_SITE_URL2`
+- `WATCH_SITE_URL3`
+- `WATCH_SITE_URL4`
+
+Example tracked template:
+
+- `src/environments/environment.example.ts`
 
 ### 3. Start development server
 
@@ -104,6 +110,32 @@ npm run build
 ```
 
 Build output is generated in `dist/`.
+
+## Deploy to Netlify (Production Link)
+
+This repo is ready for Netlify deployment.
+
+1. In Netlify, choose "Add new site" -> "Import an existing project".
+2. Connect GitHub and select this repository.
+3. Build settings are already configured through `netlify.toml`:
+	- Build command: `npm run build`
+	- Publish directory: `dist/movie-platform/browser`
+4. In Netlify site settings, add these environment variables:
+	- `TMDB_API_KEY`
+	- `TMDB_ACCESS_TOKEN`
+	- `TMDB_BASE_URL` (optional)
+	- `TMDB_IMAGE_BASE` (optional)
+	- `TMDB_YOUTUBE_EMBED` (optional)
+	- `WATCH_SITE_URL1`
+	- `WATCH_SITE_URL2`
+	- `WATCH_SITE_URL3`
+	- `WATCH_SITE_URL4`
+5. Trigger deploy. Netlify will generate environment files during build and publish a live URL.
+
+SPA route fallback is enabled using:
+
+- `netlify.toml` redirect rule
+- `public/_redirects`
 
 ## Notes
 
